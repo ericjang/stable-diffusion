@@ -27,6 +27,24 @@ This will launch gradio on port 7860 with txt2img. You can also use `docker comp
 
 <h1 align="center">Usage</h1>
 
+## Eric's Music Generation Scripts
+
+1. Run `scripts/generate_batches.sh`, which generate a set of images for each amplitude, rounded to the nearest discrete bucket.
+
+2. Run `notebooks/ldm-audio-plots-checkpoint.ipynb` which compiles an ordered list of img names based on the previously generated images and audio amplitude.
+
+3. Use ffmpeg to make the video.
+
+```
+ffmpeg -r 10 -f concat -safe 0 -i img_names.txt -c:v libx264 -crf 23 video.mp4
+```
+
+4. Use ffmpeg to merge with video and audio.
+
+```
+ffmpeg -i video.mp4 -i ~/stable-diffusion-hackathon/fun-life-112188.mp3 -map 0:v -map 1:a -c:v copy -shortest output.mp4
+```
+
 ## img2img
 
 - `img2img` can generate _512x512 images from a prior image and prompt using under 2.4GB VRAM in under 20 seconds per image_ on an RTX 2060.
